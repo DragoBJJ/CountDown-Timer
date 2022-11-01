@@ -23,7 +23,10 @@ const Clock =() => {
     }
 
     const startTimer = (timeRef: number | null) => {
-        if(!timeRef) return setTimer("00:00")
+        if(!timeRef) {
+            setTimer("Your time has been End !")
+            return resetInterval()
+        }
         const minutes =  Math.floor(timeRef / 60)
         const seconds  = timeRef % 60
         const result =  `${padTo2Digits(minutes)}:${padTo2Digits(seconds)}`
@@ -60,13 +63,14 @@ const Clock =() => {
     }
 
     const resetInterval = () => {
-        if(!timeRef.current) return
+        if(!intervalRef.current) return
+        if(timeRef.current) setTimer("00:00")
+
         setInputTime((prevState) => ({
             ["minutes"]: 0,
             ["seconds"]: 0
         }))
         timeRef.current = null
-        startTimer(timeRef.current)
         clearInterval(intervalRef.current)
     }
 
